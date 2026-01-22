@@ -399,7 +399,7 @@ function initializeModelsPage() {
         
         // If nothing is saved, go back
         if (!saved) {
-            window.location.href = 'MatchMaker.html';
+            window.location.href = 'index.html';
             return;
         }
         
@@ -409,13 +409,13 @@ function initializeModelsPage() {
         // Ensure it's an array
         if (!Array.isArray(parsed)) {
             console.error('selectedModels is not an array:', parsed);
-            window.location.href = 'MatchMaker.html';
+            window.location.href = 'index.html';
             return;
         }
         
         // Check if array is empty
         if (parsed.length === 0) {
-            window.location.href = 'MatchMaker.html';
+            window.location.href = 'index.html';
             return;
         }
         
@@ -423,7 +423,7 @@ function initializeModelsPage() {
         
     } catch (error) {
         console.error('Error loading selected models:', error);
-        window.location.href = 'MatchMaker.html';
+        window.location.href = 'index.html';
         return;
     }
     
@@ -4508,7 +4508,7 @@ function resetAllSelections() {
         startNewSession();
         
         // Reload current page
-        window.location.href = 'MatchMaker.html';
+        window.location.href = 'index.html';
         //window.location.reload();
     }
 }
@@ -4526,7 +4526,7 @@ function startNewComparison() {
         startNewSession();
         
         // Navigate to Matchmaker page for fresh start
-        window.location.href = 'MatchMaker.html';
+        window.location.href = 'index.html';
         window.location.reload();
     }
 }
@@ -7480,7 +7480,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname;
     
     // Add reset button to all pages except matchmaker
-    if (!path.includes('Matchmaker.html') && !path.includes('ResultComparsionPage.html')) {
+    if (!path.includes('index.html') && !path.includes('ResultComparsionPage.html')) {
         addResetButton();
     }
     
@@ -7493,7 +7493,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (path.includes('ResultComparsionPage.html')) {
         console.log("Initializing Comparison page...");
         initializeComparisonPage();
-    } else if (path.includes('Matchmaker.html')) {
+    } else if (path.includes('index.html')) {
         console.log("Initializing Matchmaker page...");
         initializeMatchmaker();
     }
@@ -7568,7 +7568,7 @@ function calculateResults() {
 // After DOM loads, initialize select listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on matchmaker page
-    if (window.location.pathname.includes('Matchmaker.html')) {
+    if (window.location.pathname.includes('index.html')) {
         // Initialize select event listeners after a short delay
         setTimeout(() => {
             // Add event listeners for all select elements
@@ -9164,7 +9164,7 @@ function initializeComparisonPage() {
     
     if (!savedResults || !savedModels) {
         // No results, go back to cover page
-        window.location.href = 'MatchMaker.html';
+        window.location.href = 'index.html';
         return;
     }
     
