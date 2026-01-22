@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LW Financial - Strategy Matchmaker</title>
+    <script src="./script.js"></script>
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+</head>
+<body>
+    <!-- STRATEGY MATCHMAKER QUESTIONNAIRE -->
+    <div id="matchmaker-page" class="page active">
+        <header>
+            <div class="container">
+                <div class="header-nav">
+                    <h1>Find Your Perfect Home Buying Strategy</h1>
+                </div>
+                <p>Answer a few quick questions to discover which family strategies work best for you</p>
+            </div>
+        </header>
+        
+        <div class="container">
+            <!-- Progress Indicator -->
+            <div class="matchmaker-progress">
+                <div class="progress-steps">
+                    <div class="step active" data-step="1">1. Your Profile</div>
+                    <div class="step" data-step="2">2. Family Situation</div>
+                    <div class="step" data-step="3">3. Financial Picture</div>
+                    <div class="step" data-step="4">4. Preferences</div>
+                    <div class="step" data-step="5">Results</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="matchmaker-progress" style="width: 20%;"></div>
+                </div>
+            </div>
+            
+            <!-- Step 1: Client Profile -->
+            <div id="step-1" class="questionnaire-step active">
+                <div class="card">
+                    <h2>Who's Buying?</h2>
+                    <p class="instruction-text">Let's start with the basics about your situation</p>
+                    
+                    <div class="client-type-selector">
+                        <div class="client-option" data-type="child" onclick="selectClientType('child')">
+                            <div class="option-icon">👨‍🎓</div>
+                            <h3>Adult Child/First-Time Buyer</h3>
+                            <p>I'm looking to buy my first home with family help</p>
+                        </div>
+                        <div class="client-option" data-type="parent" onclick="selectClientType('parent')">
+                            <div class="option-icon">👨‍👩‍👧‍👦</div>
+                            <h3>Parent/Family Helper</h3>
+                            <p>I want to help my children buy their first home</p>
+                        </div>
+                        <div class="client-option" data-type="both" onclick="selectClientType('both')">
+                            <div class="option-icon">🤝</div>
+                            <h3>We're Planning Together</h3>
+                            <p>Parents and children working together</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button onclick="nextStep(2)" id="next-step-1" disabled>Continue →</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Family Situation -->
+            <div id="step-2" class="questionnaire-step">
+                <div class="card">
+                    <h2>Your Family's Situation</h2>
+                    <p class="instruction-text">Help us understand your family dynamics</p>
+                    
+                    <div class="question-grid">
+                        <!-- Smart, contextual questions that appear based on Step 1 selection -->
+
+                        <div class="input-group" id="child-age-group" style="display: none;">
+                            <label>How old is the child you're planning for?</label>
+                            <div class="button-group">
+                                <button type="button" class="toggle-btn" data-value="under18" 
+                                        onclick="selectOption(this, 'child-age-range')">Under 18 (Long-term planning)</button>
+                                <button type="button" class="toggle-btn" data-value="18-25" 
+                                        onclick="selectOption(this, 'child-age-range')">18-25 years old</button>
+                                <button type="button" class="toggle-btn" data-value="26plus" 
+                                        onclick="selectOption(this, 'child-age-range')">26+ years old</button>
+                            </div>
+                            <input type="hidden" id="child-age-range" value="">
+                        </div>
+
+                                                <div class="input-group" id="parent-age-group" >
+                            <label>Approximate age of project sponsor</label>
+                            <select id="parent-age" onchange="selectOption2(this.options[this.selectedIndex].value, 'parent-age')">
+                                <option value="">Select...</option>
+                                <option value="45">40-50 years old</option>
+                                <option value="55">50-60 years old</option>
+                                <option value="65">60-70 years old</option>
+                                <option value="75">70+ years old</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Financial health</label>
+                            <div class="button-group">
+                                <button type="button" class="toggle-btn" data-value="excellent" onclick="selectOption(this, 'financial-health')">Excellent</button>
+                                <button type="button" class="toggle-btn" data-value="good" onclick="selectOption(this, 'financial-health')">Good</button>
+                                <button type="button" class="toggle-btn" data-value="moderate" onclick="selectOption(this, 'financial-health')">Moderate</button>
+                                <button type="button" class="toggle-btn" data-value="poor" onclick="selectOption(this, 'financial-health')">Poor</button>
+                            </div>
+                            <input type="hidden" id="financial-health" value="">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>How important is living close to family?</label>
+                            <div class="button-group">
+                                <button type="button" class="toggle-btn" data-value="critical" onclick="selectOption(this, 'proximity')">Critical</button>
+                                <button type="button" class="toggle-btn" data-value="important" onclick="selectOption(this, 'proximity')">Important</button>
+                                <button type="button" class="toggle-btn" data-value="nice" onclick="selectOption(this, 'proximity')">Nice to Have</button>
+                                <button type="button" class="toggle-btn" data-value="irrelevant" onclick="selectOption(this, 'proximity')">Not Important</button>
+                            </div>
+                            <input type="hidden" id="proximity" value="">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Do you own a home with significant equity ($500k+)?</label>
+                            <div class="button-group">
+                                <button type="button" class="toggle-btn" data-value="yes" onclick="selectOption(this, 'home-equity')">Yes</button>
+                                <button type="button" class="toggle-btn" data-value="some" onclick="selectOption(this, 'home-equity')">Some Equity</button>
+                                <button type="button" class="toggle-btn" data-value="no" onclick="selectOption(this, 'home-equity')">Little/No Equity</button>
+                                <button type="button" class="toggle-btn" data-value="unknown" onclick="selectOption(this, 'home-equity')">Not Sure</button>
+                            </div>
+                            <input type="hidden" id="home-equity" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="secondary-btn" onclick="prevStep(1)">← Back</button>
+                        <button onclick="nextStep(3)">Continue →</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Financial Picture -->
+            <div id="step-3" class="questionnaire-step">
+                <div class="card">
+                    <h2>Financial Picture</h2>
+                    <p class="instruction-text">Understanding resources and constraints</p>
+                    
+                    <div class="question-grid">
+                        <div class="input-group">
+                            <label>Current down payment saved</label>
+                            <select id="downpayment-saved" onchange="selectOption2(this.options[this.selectedIndex].value, 'downpayment-saved' )">
+                                <option value="">Select...</option>
+                                <option value="0">Starting from scratch</option>
+                                <option value="10k">Less than $20,000</option>
+                                <option value="20k">$20,000 - $50,000</option>
+                                <option value="50k">$50,000 - $100,000</option>
+                                <option value="100k+">$100,000+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Ideal timeline to purchase</label>
+                            <div class="button-group">
+                                <button type="button" class="toggle-btn" data-value="3mo" onclick="selectOption(this, 'timeline')">3 months</button>
+                                <button type="button" class="toggle-btn" data-value="6mo" onclick="selectOption(this, 'timeline')">6 months</button>
+                                <button type="button" class="toggle-btn" data-value="1yr" onclick="selectOption(this, 'timeline')">1 year</button>
+                                <button type="button" class="toggle-btn" data-value="3yr" onclick="selectOption(this, 'timeline')">3+ years</button>
+                            </div>
+                            <input type="hidden" id="timeline" value="">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Credit situation</label>
+                            <div class="button-group">
+                                <button type="button" class="toggle-btn" data-value="excellent" onclick="selectOption(this, 'credit')">Excellent (750+)</button>
+                                <button type="button" class="toggle-btn" data-value="good" onclick="selectOption(this, 'credit')">Good (680-749)</button>
+                                <button type="button" class="toggle-btn" data-value="average" onclick="selectOption(this, 'credit')">Average (620-679)</button>
+                                <button type="button" class="toggle-btn" data-value="poor" onclick="selectOption(this, 'credit')">Poor/Repairing</button>
+                            </div>
+                            <input type="hidden" id="credit" value="">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Are parents open to "gifting" with repayment?</label>
+                            <div class="button-group">
+                                <button type="button" class="toggle-btn" data-value="yes" onclick="selectOption(this, 'gifting')">Yes, with agreement</button>
+                                <button type="button" class="toggle-btn" data-value="maybe" onclick="selectOption(this, 'gifting')">Possibly</button>
+                                <button type="button" class="toggle-btn" data-value="no" onclick="selectOption(this, 'gifting')">No, gift only</button>
+                                <button type="button" class="toggle-btn" data-value="unsure" onclick="selectOption(this, 'gifting')">Not discussed</button>
+                            </div>
+                            <input type="hidden" id="gifting" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="secondary-btn" onclick="prevStep(2)">← Back</button>
+                        <button onclick="nextStep(4)">Continue →</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Preferences & Dealbreakers -->
+            <div id="step-4" class="questionnaire-step">
+                <div class="card">
+                    <h2>Preferences & Dealbreakers</h2>
+                    <p class="instruction-text">What would you consider or avoid?</p>
+                    
+                    <div class="preference-grid" id="strategy-preference-grid" style="margin-top: 2rem;">
+                        <!-- Each preference maps to a specific model -->
+                        <div class="preference-card" data-model="multi-gen">
+                            <h4>🏡 Multi-Generation Living</h4>
+                            <p><strong>Build a separate suite or laneway home on parent's property.</strong> Child finances construction, gains equity share in parent's home while saving on living expenses.</p>
+                            <div class="comfort-scale-inline">
+                                <select class="strategy-rating" data-model="multi-gen" onchange="updateStrategyRating('multi-gen', this.value)">
+                                    <option value="">Select rating...</option>
+                                    <option value="5">5 - My Top Option</option>
+                                    <option value="4">4 - Comfortable</option>
+                                    <option value="3">3 - Indifference</option>
+                                    <option value="2">2 - Uncomfortable</option>
+                                    <option value="1">1 - Least Favorite Option</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-card" data-model="early-inheritance">
+                            <h4>💰 Early Inheritance</h4>
+                            <p><strong>Receive inheritance earlier when it has the greatest impact.</strong> Parents calculate what they can gift now from their estate, helping child buy a home in their 20s-30s instead of waiting until parents pass away.</p>
+                            <div class="comfort-scale-inline">
+                                <select class="strategy-rating" data-model="early-inheritance" onchange="updateStrategyRating('early-inheritance', this.value)">
+                                    <option value="">Select rating...</option>
+                                    <option value="5">5 - My Top Option</option>
+                                    <option value="4">4 - Comfortable</option>
+                                    <option value="3">3 - Indifference</option>
+                                    <option value="2">2 - Uncomfortable</option>
+                                    <option value="1">1 - Least Favorite Option</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-card" data-model="co-investing">
+                            <h4>🤝 Co-Investing</h4>
+                            <p><strong>Parents invest stock market funds as a down payment loan.</strong> Child buys property, builds equity tax-free, then repays parents with interest when selling/upgrading.</p>
+                            <div class="comfort-scale-inline">
+                                <select class="strategy-rating" data-model="co-investing" onchange="updateStrategyRating('co-investing', this.value)">
+                                    <option value="">Select rating...</option>
+                                    <option value="5">5 - My Top Option</option>
+                                    <option value="4">4 - Comfortable</option>
+                                    <option value="3">3 - Indifference</option>
+                                    <option value="2">2 - Uncomfortable</option>
+                                    <option value="1">1 - Least Favorite Option</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-card" data-model="home-equity">
+                            <h4>🏠 Home Equity Use</h4>
+                            <p><strong>Parents use home equity (HELOC or Reverse Mortgage) to fund down payment.</strong> No monthly payments required with reverse mortgage; loan repaid only when parents sell, move, or pass away.</p>
+                            <div class="comfort-scale-inline">
+                                <select class="strategy-rating" data-model="home-equity" onchange="updateStrategyRating('home-equity', this.value)">
+                                    <option value="">Select rating...</option>
+                                    <option value="5">5 - My Top Option</option>
+                                    <option value="4">4 - Comfortable</option>
+                                    <option value="3">3 - Indifference</option>
+                                    <option value="2">2 - Uncomfortable</option>
+                                    <option value="1">1 - Least Favorite Option</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-card" data-model="three-thirty">
+                            <h4>⏳ Three for Thirty</h4>
+                            <p>Live rent-free with parents to save 70% of income for 3 years.</strong> Build a down payment quickly while creating 30 years of tax-free equity growth in your own home.</p>
+                            <div class="comfort-scale-inline">
+                                <select class="strategy-rating" data-model="three-thirty" onchange="updateStrategyRating('three-thirty', this.value)">
+                                    <option value="">Select rating...</option>
+                                    <option value="5">5 - My Top Option</option>
+                                    <option value="4">4 - Comfortable</option>
+                                    <option value="3">3 - Indifference</option>
+                                    <option value="2">2 - Uncomfortable</option>
+                                    <option value="1">1 - Least Favorite Option</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="secondary-btn" onclick="prevStep(3)">← Back</button>
+                        <button onclick="calculateResults()">See My Matches →</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 5: Results -->
+            <div id="step-5" class="questionnaire-step">
+                <div class="card">
+                    <h2>Your Strategy Matches</h2>
+                    <p class="instruction-text">Based on your answers, here are your best options:</p>
+                    
+                    <div class="match-results" id="match-results">
+                        <div class="loading-message">
+                            <div class="spinner"></div>
+                            <p>Analyzing your responses...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="results-actions">
+                        <div class="match-quality">
+                            <h3>Match Quality</h3>
+                            <div class="match-bars">
+                                <!-- Dynamically filled -->
+                            </div>
+                        </div>
+                        
+                        <div class="next-steps">
+                            <h3>Next Steps</h3>
+                            <p>Your top 3 strategies have been pre-selected for detailed comparison.</p>
+                            <button onclick="proceedToSelectedStrategies()" class="primary-btn">Compare My Top Strategies →</button>
+                            <button onclick="viewAllStrategies()" class="secondary-btn">See All 5 Strategies</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</body>
+</html> 
