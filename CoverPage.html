@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LW Financial - Complete Family Strategies</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./script.js"></script>
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+</head>
+<body>
+    <!-- 5-MODEL OVERVIEW PAGE -->
+    <div id="overview-page" class="page active">
+        <header>
+            <div class="container">
+                <h1>LW Financial - Family Home Buying Strategies</h1>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="card">
+                <h2>Choose Your Strategy Path</h2>
+                <p class="instruction-text">
+                    Select ALL strategies you want to compare. Each offers a different approach to family-assisted home buying. 
+                    After selection, click "Proceed to Feasibility Check" to continue.
+                </p>
+                
+                <div class="five-models-grid">
+                    <!-- Model 1: Three for Thirty -->
+                    <div class="model-card-large selectable" data-model="three-thirty" onclick="toggleModelSelection('three-thirty')">
+                        <div class="model-number">1</div>
+                        <div class="selection-checkbox">
+                            <input type="checkbox" id="check-three-thirty" style="display: none;">
+                            <span class="checkmark"></span>
+                        </div>
+                        <h3>Three for Thirty</h3>
+                        <p class="model-subtitle">Child Savings Plan</p>
+                        <p class="model-description">
+                            Child lives rent-free with parents for 3 years, saving 70% of gross income 
+                            for a down payment. Compare against parents borrowing $200k.
+                        </p>
+                        <div class="model-highlights">
+                            <span>✅ No parental debt</span>
+                            <span>✅ Child builds savings habit</span>
+                            <span>⚠️ Delays home purchase by 3 years</span>
+                        </div>
+                        <button class="model-select-btn">Select to Compare</button>
+                    </div>
+                    
+                    <!-- Model 2: Co-Investing -->
+                    <div class="model-card-large selectable" data-model="co-investing" onclick="toggleModelSelection('co-investing')">
+                        <div class="model-number">2</div>
+                        <div class="selection-checkbox">
+                            <input type="checkbox" id="check-co-investing" style="display: none;">
+                            <span class="checkmark"></span>
+                        </div>
+                        <h3>Co-Investing</h3>
+                        <p class="model-subtitle">Family Loan from Investments</p>
+                        <p class="model-description">
+                            Parents lend funds from existing investments with formal repayment agreement.
+                            Compare investment growth vs. helping child enter market.
+                        </p>
+                        <div class="model-highlights">
+                            <span>✅ Formal agreement</span>
+                            <span>✅ Interest stays in family</span>
+                            <span>⚠️ Opportunity cost on investments</span>
+                        </div>
+                        <button class="model-select-btn">Select to Compare</button>
+                    </div>
+                    
+                    <!-- Model 3: Multi-Generation Living -->
+                    <div class="model-card-large selectable" data-model="multi-gen" onclick="toggleModelSelection('multi-gen')">
+                        <div class="model-number">3</div>
+                        <div class="selection-checkbox">
+                            <input type="checkbox" id="check-multi-gen" style="display: none;">
+                            <span class="checkmark"></span>
+                        </div>
+                        <h3>Multi-Generation Living</h3>
+                        <p class="model-subtitle">Laneway House / Rental Suite</p>
+                        <p class="model-description">
+                            Child builds addition on parent's property. Parents fund construction, 
+                            child services debt through rental-equivalent payments.
+                        </p>
+                        <div class="model-highlights">
+                            <span>✅ Shared living benefits</span>
+                            <span>✅ Property value enhancement</span>
+                            <span>⚠️ Construction complexities</span>
+                        </div>
+                        <button class="model-select-btn">Select to Compare</button>
+                    </div>
+                    
+                    <!-- Model 4: Early Inheritance -->
+                    <div class="model-card-large selectable" data-model="early-inheritance" onclick="toggleModelSelection('early-inheritance')">
+                        <div class="model-number">4</div>
+                        <div class="selection-checkbox">
+                            <input type="checkbox" id="check-early-inheritance" style="display: none;">
+                            <span class="checkmark"></span>
+                        </div>
+                        <h3>Early Inheritance</h3>
+                        <p class="model-subtitle">Advance Future Inheritance</p>
+                        <p class="model-description">
+                            Parents gift portion of inheritance early after ensuring retirement needs 
+                            are met. Compare growth if kept vs. given now for housing.
+                        </p>
+                        <div class="model-highlights">
+                            <span>✅ No repayment required</span>
+                            <span>✅ Immediate housing access</span>
+                            <span>⚠️ Retirement security check needed</span>
+                        </div>
+                        <button class="model-select-btn">Select to Compare</button>
+                    </div>
+                    
+                    <!-- Model 5: Home Equity Usage -->
+                    <div class="model-card-large selectable" data-model="home-equity" onclick="toggleModelSelection('home-equity')">
+                        <div class="model-number">5</div>
+                        <div class="selection-checkbox">
+                            <input type="checkbox" id="check-home-equity" style="display: none;">
+                            <span class="checkmark"></span>
+                        </div>
+                        <h3>Home Equity Usage</h3>
+                        <p class="model-subtitle">LOC vs Reverse Mortgage</p>
+                        <p class="model-description">
+                            Parents use home equity (LOC or Reverse Mortgage) to provide down payment 
+                            assistance while keeping investments intact.
+                        </p>
+                        <div class="model-highlights">
+                            <span>✅ Investments continue growing</span>
+                            <span>✅ Multiple equity options</span>
+                            <span>⚠️ Increased debt load</span>
+                        </div>
+                        <button class="model-select-btn">Select to Compare</button>
+                    </div>
+                </div>
+                
+                <div class="selection-summary" id="selection-summary" style="display: none;">
+                    <h3>Selected Strategies (<span id="selected-count">0</span>):</h3>
+                    <div id="selected-models-list"></div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 3rem;">
+                    <button id="proceed-button" onclick="proceedToModelsPage()" disabled>
+                        Proceed to Feasibility Check →
+                    </button>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
+                        Select at least one strategy to continue
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCoverPage();
+        });
+
+        
+        function goToMatchmaker() {
+            // Clear current selections but keep session
+            localStorage.removeItem('selectedModels');
+            localStorage.removeItem('recommendedModels');
+            window.location.href = 'Matchmaker.html';
+        }
+    </script>
+</body>
+</html>

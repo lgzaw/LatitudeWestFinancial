@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LW Financial - Strategy Comparison Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./script.js"></script>
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+</head>
+<body>
+    <!-- COMPARISON PAGE -->
+    <div id="comparison-page" class="page active">
+        <header>
+            <div class="container">
+                <h1>Strategy Comparison Results</h1>
+                <p>Side-by-side analysis of your selected strategies</p>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="page-header">
+                <button class="back-button" onclick="goBackToMatchmaker()">← Back to Questionnaire</button>
+                <button class="secondary-btn" onclick="startNewComparison()">Start New Comparison</button>
+            </div>
+            
+            <div class="card">
+                <div class="comparison-header">
+                    <div class="time-horizon-note">
+                        ⏰ All calculations based on 30-year time horizon
+                    </div>
+                    <div class="defaults-note">
+                        ℹ️ Default values used where "I don't know" was selected
+                    </div>
+                </div>
+                
+                <!-- Performance Comparison Bar Chart -->
+                <div class="chart-container-full">
+                    <h3>Model Performance Comparison (30-Year Child Benefit)</h3>
+                    <canvas id="performance-bar-chart"></canvas>
+                </div>
+                
+                <!-- Strategy Options Comparison Bar Chart -->
+                <div class="chart-container-full">
+                    <h3>Comparison of Options Within Each Strategy</h3>
+                    <canvas id="options-comparison-chart"></canvas>
+                </div>
+                
+                <!-- Detailed Comparison Table -->
+                <div class="comparison-table-container">
+                    <h3>Detailed Strategy Comparison</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Strategy</th>
+                                <th>Performance (30 yrs)</th>
+                                <th>Parent Risk</th>
+                                <th>Your Comfort</th>
+                                <th>Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparison-results-body">
+                            <!-- Filled by JavaScript -->
+                            <tr>
+                                <td colspan="5" style="text-align: center;">
+                                    <div class="loading-message">
+                                        <div class="spinner"></div>
+                                        <p>Loading comparison results...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Recommendation -->
+                <div class="winner-box winner">
+                    <h2 style="color: #f39c12;">Recommended Strategy</h2>
+                    <div style="font-size: 1.5rem; font-weight: bold; margin: 1rem 0;" id="overall-winner">-</div>
+                    <div style="font-size: 1.2rem; color: #666;" id="winner-reasoning">-</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button onclick="showPostAnalysisQuestionnaire()" id="post-analysis-btn">
+                        🔍 Complete Full Financial Check
+                    </button>
+                    <button onclick="window.print()" id="print-btn" disabled>
+                        📄 Print Final Report (Complete Full Check First)
+                    </button>
+                    <button class="secondary-btn" onclick="startNewComparison()">Start New Comparison</button>
+                </div>
+
+                <!-- POST-ANALYSIS QUESTIONNAIRE MODAL -->
+                <div id="post-analysis-modal" class="modal" style="display: none;">
+                    <div class="modal-content" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
+                        <div class="modal-header">
+                            <h2>📋 Complete Financial Details Check</h2>
+                            <button class="close-modal" onclick="closePostAnalysisModal()">×</button>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <div class="smart-questionnaire-intro">
+                                <div class="info-note" style="background: #e8f4fc; margin-bottom: 1rem;">
+                                    <p><strong>Smart Questionnaire System</strong></p>
+                                    <p>We'll only ask questions that haven't been answered yet and are relevant to your situation.</p>
+                                    <p>Questions already answered: <span id="answered-count">0</span>/50</p>
+                                </div>
+                            </div>
+                            
+                            <div class="questionnaire-progress">
+                                <div class="progress-steps">
+                                    <div class="step active" data-step="1">1. Project Sponsor</div>
+                                    <div class="step" data-step="2">2. Family Members</div>
+                                    <div class="step" data-step="3">3. Financial Details</div>
+                                    <div class="step" data-step="4">4. Model Specifics</div>
+                                    <div class="step" data-step="5">Review & Submit</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="post-analysis-progress" style="width: 20%;"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 1: Project Sponsor -->
+                            <div id="pa-step-1" class="questionnaire-step active">
+                                <div class="card">
+                                    <h3>Primary Project Sponsor Details</h3>
+                                    <p>Please provide information about the main person responsible for this project</p>
+                                    
+                                    <div class="input-group">
+                                        <label>Project Sponsor Type (From Questionnaire)</label>
+                                        <div class="display-value" id="pa-client-type-display">
+                                            <!-- Filled by JavaScript -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Primary Sponsor Information Form -->
+                                    <div id="primary-sponsor-form">
+                                        <h4>Primary Sponsor Information</h4>
+                                        
+                                        <div class="input-group">
+                                            <label>Full Legal Name</label>
+                                            <input type="text" id="pa-primary-name" 
+                                                placeholder="Full legal name" 
+                                                onchange="updatePrimarySponsor('name', this.value)">
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label>Date of Birth</label>
+                                            <input type="date" id="pa-primary-dob" 
+                                                onchange="updatePrimarySponsor('dob', this.value)">
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label>Primary Role in Project</label>
+                                            <select id="pa-primary-role" onchange="updatePrimarySponsor('role', this.value)">
+                                                <option value="">Select...</option>
+                                                <option value="buyer">First-Time Buyer</option>
+                                                <option value="parent-helper">Parent Helper</option>
+                                                <option value="joint-decision">Joint Decision Maker</option>
+                                                <option value="financial-supporter">Financial Supporter</option>
+                                                <option value="beneficiary">Primary Beneficiary</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label>Relationship to Other Family Members</label>
+                                            <textarea id="pa-primary-relationship" 
+                                                    placeholder="Describe relationship to other family members involved..."
+                                                    onchange="updatePrimarySponsor('relationship', this.value)"></textarea>
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label>Current Living Situation</label>
+                                            <select id="pa-primary-living" onchange="updatePrimarySponsor('living', this.value)">
+                                                <option value="">Select...</option>
+                                                <option value="renting">Renting</option>
+                                                <option value="owns-primary">Owns Primary Residence</option>
+                                                <option value="owns-investment">Owns Investment Property</option>
+                                                <option value="lives-with-family">Lives with Family</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label>Marital Status</label>
+                                            <select id="pa-primary-marital" onchange="updatePrimarySponsor('marital', this.value)">
+                                                <option value="">Select...</option>
+                                                <option value="single">Single</option>
+                                                <option value="married">Married</option>
+                                                <option value="common-law">Common-Law</option>
+                                                <option value="divorced">Divorced</option>
+                                                <option value="widowed">Widowed</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="input-group">
+                                            <label>Number of Dependents</label>
+                                            <input type="number" id="pa-primary-dependents" min="0" 
+                                                onchange="updatePrimarySponsor('dependents', this.value)">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="step-actions">
+                                        <button onclick="nextPAStep(2)">Continue →</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2: Family Members -->
+                            <div id="pa-step-2" class="questionnaire-step">
+                                <div class="card">
+                                    <h3>Other Project Sponsors</h3>
+                                    <p>List all other family members involved in this home purchase strategy</p>
+                                    
+                                    <div id="other-sponsors-container">
+                                        <!-- Other sponsors will be added here -->
+                                    </div>
+                                    
+                                    <div style="text-align: center; margin: 2rem 0;">
+                                        <button class="secondary-btn" onclick="addOtherSponsor()" style="margin-bottom: 1rem;">
+                                            + Add Another Sponsor
+                                        </button>
+                                        <p><small>Add all family members who will be contributing financially or making decisions</small></p>
+                                    </div>
+                                    
+                                    <div class="step-actions">
+                                        <button class="secondary-btn" onclick="prevPAStep(1)">← Back</button>
+                                        <button onclick="nextPAStep(3)">Continue →</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3: Financial Details -->
+                            <div id="pa-step-3" class="questionnaire-step">
+                                <div class="card">
+                                    <h3>Complete Financial Picture for All Sponsors</h3>
+                                    <p>Financial details for each sponsor involved</p>
+                                    
+                                    <div id="financial-details-cards">
+                                        <!-- Financial cards will be generated here -->
+                                    </div>
+                                    
+                                    <div class="step-actions">
+                                        <button class="secondary-btn" onclick="prevPAStep(2)">← Back</button>
+                                        <button onclick="nextPAStep(4)">Continue →</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 4: Model Specific Questions -->
+                            <div id="pa-step-4" class="questionnaire-step">
+                                <div class="card">
+                                    <h3>Strategy-Specific Details</h3>
+                                    <p id="model-specifics-instruction">Additional questions for your selected strategies.</p>
+                                    
+                                    <div id="model-specific-questions">
+                                        <!-- Model-specific questions will be loaded here -->
+                                    </div>
+                                    
+                                    <div class="step-actions">
+                                        <button class="secondary-btn" onclick="prevPAStep(3)">← Back</button>
+                                        <button onclick="nextPAStep(5)" id="pa-step-4-continue">Continue →</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 5: Review & Submit -->
+                            <div id="pa-step-5" class="questionnaire-step">
+                                <div class="card">
+                                    <h3>Review & Finalize</h3>
+                                    
+                                    <div class="review-summary">
+                                        <h4>📊 Summary of Information Provided</h4>
+                                        <div id="review-summary-content">
+                                            <!-- Summary will be filled by JavaScript -->
+                                        </div>
+                                        
+                                        <div class="consent-section">
+                                            <div class="input-group">
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" id="consent-email">
+                                                    <span>I consent to have my completed questionnaire emailed to LW Financial for professional review</span>
+                                                </label>
+                                                
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" id="consent-recalculate" checked>
+                                                    <span>Recalculate strategies with this detailed information for more accurate results</span>
+                                                </label>
+                                                
+                                                <div class="email-notice">
+                                                    <small>The full 50-question PDF will be generated and emailed to: zianw@hotmail.com</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="step-actions">
+                                        <button class="secondary-btn" onclick="prevPAStep(4)">← Back</button>
+                                        <button id="submit-pa-btn" onclick="submitPostAnalysis()">
+                                            Complete Full Check & Generate Report
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Steps -->
+                <div class="action-steps">
+                    <h3>Next Steps</h3>
+                    <ol>
+                        <li><strong>Review the detailed analysis</strong> for your top strategy above</li>
+                        <li><strong>Consult with a tax accountant</strong> for specific tax implications</li>
+                        <li><strong>Schedule a meeting with LW Financial</strong> for personalized advice</li>
+                        <li><strong>Discuss with family members</strong> involved in the decision</li>
+                        <li><strong>Contact us:</strong> 604.202.9178 | CDY@LATITUDE-WEST.CA</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+
+  
+        function goBackToMatchmaker() {
+            // Keep results but clear selections
+            localStorage.removeItem('selectedModels');
+            localStorage.removeItem('feasibleModels');
+            localStorage.removeItem('modelInputs');
+            window.location.href = 'MatchMaker.html';
+        }
+    
+    </script>
+</body>
+</html>
